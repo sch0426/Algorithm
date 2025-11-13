@@ -1,19 +1,20 @@
-import java.util.Scanner;
-import java.io.FileInputStream;
+import java.util.*;
+import java.io.*;
 
 class Solution
 {
 	public static void main(String args[]) throws Exception
 	{
-		Scanner sc = new Scanner(System.in);
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int[][] ladder = new int[100][100];
         
 		for(int test_case = 1; test_case <= 10; test_case++)
 		{
-			int testNum = sc.nextInt();
+			int testNum = Integer.parseInt(br.readLine().trim());
             for(int i = 0; i < 100; i++) { // 사다리 초기화
+                StringTokenizer st = new StringTokenizer(br.readLine());
             	for(int j = 0; j < 100; j++) {
-                	ladder[i][j] = sc.nextInt();
+                	ladder[i][j] = Integer.parseInt(st.nextToken());
                 }
             }
             
