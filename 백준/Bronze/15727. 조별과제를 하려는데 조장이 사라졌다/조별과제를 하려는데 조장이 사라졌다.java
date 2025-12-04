@@ -6,11 +6,8 @@ public class Main {
 
         int distance = Integer.parseInt(br.readLine());
         int answer = 0;
-        while(distance > 5) {
-            distance -= 5;
-            answer++;
-        }
-        answer++;
+        if(distance % 5 == 0){answer = distance / 5;}
+        else answer = distance / 5 + 1;
 
         System.out.println(answer);
     }
