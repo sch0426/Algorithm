@@ -3,41 +3,41 @@ import java.io.*;
 
 public class Solution {
 
-	public static void main(String[] args) throws Exception {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int T = Integer.parseInt(br.readLine());
-		
-		for(int tc = 1; tc <= T; tc++) {
-			int N = Integer.parseInt(br.readLine());
-			int[] tree = new int[N];
-			int maxTree = 0;
-			
-			StringTokenizer st = new StringTokenizer(br.readLine());
-			for(int i = 0; i < N; i++) {
-				tree[i] = Integer.parseInt(st.nextToken());
-				maxTree = Math.max(maxTree, tree[i]);
-			}
-			
-			int even = 0;
-			int odd = 0;
-			for(int i = 0; i < N; i++) {
-				even += (maxTree - tree[i]) / 2;
-				odd += (maxTree - tree[i]) % 2;
-			}
-			
-			while(even > odd + 1) {
-				even -= 1;
-				odd += 2;
-			}
-			
-			if(even >= odd) {
-				System.out.println("#" + tc + " " + even*2);
-			} else {
-				System.out.println("#" + tc + " " + (odd*2-1));
-			}
-			
-		}
-		
-	}
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(br.readLine());
+        StringBuilder sb = new StringBuilder();
 
+        for(int tc = 1; tc <= T; tc++) {
+            int N = Integer.parseInt(br.readLine());
+            int[] trees = new int[N];
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int maxTree = 0;
+            for(int i = 0; i < N; i++) {
+                trees[i] = Integer.parseInt(st.nextToken());
+                maxTree = Math.max(maxTree, trees[i]);
+            }
+
+            int ones = 0;
+            int twos = 0;
+            for(int i = 0; i < N; i++) {
+                int need = maxTree - trees[i];
+                ones += need % 2;
+                twos += need / 2;
+            }
+
+            while(twos > ones + 1) {
+                twos--;
+                ones += 2;
+            }
+
+            if(ones > twos) {
+                sb.append("#" + tc + " ").append(ones * 2 - 1).append("\n");
+            } else {
+                sb.append("#" + tc + " ").append(twos * 2).append("\n");
+            }
+
+        }
+        System.out.println(sb);
+    }
 }
