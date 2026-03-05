@@ -1,75 +1,67 @@
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.StringTokenizer;
 
 public class Solution {
-    static int N, M;
-    static ArrayList<Integer>[] adj;
-    static int[] smallCount;
-    static int[] bigCount;
-
+    static int N, M, smallStu[], bigStu[];
+    static ArrayList<Integer>[] student;
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int T = Integer.parseInt(br.readLine());
         StringBuilder sb = new StringBuilder();
 
-        for (int tc = 1; tc <= T; tc++) {
+        for(int tc = 1; tc <= T; tc++) {
             N = Integer.parseInt(br.readLine()); // 학생 수
             M = Integer.parseInt(br.readLine()); // 비교 횟수
-            
-            adj = new ArrayList[N + 1];
-            smallCount = new int[N + 1];
-            bigCount = new int[N + 1];
-
-            for (int i = 1; i <= N; i++) {
-                adj[i] = new ArrayList<>();
+            student = new ArrayList[N + 1];
+            for(int i = 1; i <= N; i++) {
+                student[i] = new ArrayList<>();
             }
-
-            for (int i = 0; i < M; i++) {
+            for(int i = 0; i < M; i++) {
                 StringTokenizer st = new StringTokenizer(br.readLine());
-                int a = Integer.parseInt(st.nextToken());
-                int b = Integer.parseInt(st.nextToken());
-                adj[a].add(b); // a < b 관계 (a에서 b로 화살표)
+                int smallStuNum = Integer.parseInt(st.nextToken());
+                int bigStuNum = Integer.parseInt(st.nextToken());
+                student[smallStuNum].add(bigStuNum); // 작은 학생이 큰 학생 바라보도록 리스트 연결
             }
 
-            // 모든 학생에 대해 BFS 수행
-            for (int i = 1; i <= N; i++) {
+            smallStu = new int[N + 1];
+            bigStu = new int[N + 1];
+            for(int i = 1; i <= N; i++) {
                 bfs(i);
             }
 
             int ans = 0;
-            for (int i = 1; i <= N; i++) {
-                // 나보다 큰 사람 수 + 나보다 작은 사람 수 == N - 1 이면 위치를 아는 것
-                if (smallCount[i] + bigCount[i] == N - 1) {
-                    ans++;
-                }
+            for(int i = 1; i <= N; i++) {
+                if(smallStu[i] + bigStu[i] == N - 1) ans++;
             }
-            sb.append("#").append(tc).append(" ").append(ans).append("\n");
+            sb.append("#" + tc + " ").append(ans).append("\n");
         }
-        System.out.print(sb);
+        System.out.println(sb);
+
     }
 
-    static void bfs(int start) {
-        Queue<Integer> q = new LinkedList<>();
+    private static void bfs(int startStu) {
+        Deque<Integer> q = new ArrayDeque<>();
         boolean[] visited = new boolean[N + 1];
-        
-        q.add(start);
-        visited[start] = true;
+        visited[startStu] = true;
+        q.offer(startStu);
 
-        while (!q.isEmpty()) {
+        while(!q.isEmpty()) {
             int curr = q.poll();
 
-            for (int next : adj[curr]) {
-                if (!visited[next]) {
+            for(int next : student[curr]) {
+                if(!visited[next]) {
                     visited[next] = true;
-                    q.add(next);
-                    
-                    // 핵심 로직:
-                    // start 학생 입장에서는 next가 나보다 큰 사람임
-                    bigCount[start]++;
-                    // next 학생 입장에서는 start가 나보다 작은 사람임
-                    smallCount[next]++;
+                    q.offer(next);
+
+                    bigStu[startStu]++;
+                    smallStu[next]++;
                 }
             }
         }
+
     }
 }
