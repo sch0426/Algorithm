@@ -23,8 +23,7 @@ public class Main {
 				makeSets(f1);
 				makeSets(f2);
 				
-				union(f1, f2);
-				sb.append(friends.get(findSet(f1))).append("\n");
+				sb.append(union(f1, f2)).append("\n");
 			}
 		}
 		System.out.println(sb);
@@ -43,16 +42,16 @@ public class Main {
 		return parents.get(name);
 	}
 	
-	static boolean union(String name1, String name2) {
+	static int union(String name1, String name2) {
 		String name1Root = findSet(name1);
 		String name2Root = findSet(name2);
 		
-		if(name1Root.equals(name2Root)) return false;
+		if(!name1Root.equals(name2Root)) {
+			parents.put(name2Root, name1Root); // 2의 루트를 1의 루트로 변경하면서 합친다
+			friends.put(name1Root, friends.get(name1Root) + friends.get(name2Root));
+		}
 		
-		parents.put(name2Root, name1Root); // 2의 루트를 1의 루트로 변경하면서 합친다
-		friends.put(name1Root, friends.get(name1Root) + friends.get(name2Root));
-		
-		return true;
+		return friends.get(name1Root);
 	}
 	
 }
