@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-	static class Person implements Comparable<Person>{
+	static class Person {
 		int age;
 		String name;
 		
@@ -12,10 +12,6 @@ public class Main {
 			this.name = name;
 		}
 	
-		@Override
-		public int compareTo(Person o) {
-			return Integer.compare(this.age, o.age);
-		}
 	}
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -31,9 +27,7 @@ public class Main {
 			String name = st.nextToken();
 			people[age].add(new Person(age, name));
 		}
-		for(int i = 1; i < people.length; i++) {
-			Collections.sort(people[i]);;
-		}
+		
 		StringBuilder sb = new StringBuilder();
 		for(int i = 1; i < people.length; i++) {
 			for(Person p : people[i]) {
